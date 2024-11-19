@@ -19,15 +19,30 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { name, email, phone, password, role } = formData;
+    
+    // Fetch request using form data
+    fetch('http://localhost:5000/api/user/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData), // Use formData here
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.message) {
+        setMessage(data.message); // Assuming response has a message property
+      } else {
+        setMessage('Sign-up failed. Please try again.');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      setMessage('An error occurred. Please try again.');
+    });
 
-    // Basic validation
-    if (name && email && phone && password && role) {
-      setMessage(`Sign up successful as a ${role}!`);
-      setFormData({ name: '', email: '', phone: '', password: '', role: 'user' }); // Reset form
-    } else {
-      setMessage('Please fill in all fields.');
-    }
+    // Reset form after submission
+    setFormData({ name: '', email: '', phone: '', password: '', role: 'user' });
   };
 
   return (
