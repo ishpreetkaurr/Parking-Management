@@ -1,15 +1,12 @@
 const express = require('express');
-const {
-  getParkingSpaces,
-  updateParkingSpace,
-  seedParkingSpaces,
-} = require('../controllers/parkingController');
+const { createSlot, getAllSlots, updateSlot, deleteSlot } = require('../controllers/parkingController');
 
 const router = express.Router();
 
-// Routes
-router.get('/get', getParkingSpaces); // GET all parking spaces
-router.post('/update', updateParkingSpace); // POST update status
-router.post('/seed', seedParkingSpaces); // POST seed data
+// CRUD routes for parking slots
+router.post('/slots', createSlot);
+router.get('/slots', getAllSlots);
+router.put('/slots/:id', updateSlot);
+router.delete('/slots/:id', deleteSlot);
 
 module.exports = router;

@@ -1,57 +1,37 @@
-import React from 'react'
-import '../Styles/ParkingSpace.css';
-const ParkingSpace = () => {
+import React, { useState, useEffect } from 'react';
+import SlotForm from './SlotForm';
+import SlotList from './SlotList';
+import API from '../api';
+import '../Styles/ParkingSpace.css'; // Import the CSS
+
+const ManageSlots = () => {
+  const [slots, setSlots] = useState([]);
+
+  const fetchSlots = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/slots');
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setSlots(data);
+    } catch (error) {
+      console.error('Error fetching slots:', error.message);
+      alert('Failed to fetch slots. Please try again later.');
+    }
+  };
+  
+  useEffect(() => {
+    fetchSlots();
+  }, []);
+
   return (
-    <div className='mainContainerparkingspace'>
-        <div> 
-            <h1>Parking Space</h1>
-        </div>
-    <div className='ParkingSpaceContainer'>
-      <div className='twowheeler'>
-        <h2>2 Wheeler</h2>
-        <div>
-            <span>Available</span>
-            <span>Available</span>
-            <span>Available</span>
-            <span>Available</span>
-            <span>Available</span>
-            <span>Available</span>
-            <span>Available</span>
-
-        </div>
-      </div>
-
-      <div className='threewheeler'>
-        <h2>3 Wheeler</h2>
-        <div>
-            <span>Available</span>
-            <span>Available</span>
-            <span>Available</span>
-            <span>Available</span>
-            <span>Available</span>
-            <span>Available</span>
-            <span>Available</span>
-
-        </div>
-      </div>
-
-      <div className='fourwheeler'>
-        <h2>4 Wheeler</h2>
-        <div>
-            <span>Available</span>
-            <span>Available</span>
-            <span>Available</span>
-            <span>Available</span>
-            <span>Available</span>
-            <span>Available</span>
-            <span>Available</span>
-
-        </div>
-      </div>
-
+    <div className="manage-slots">
+      <h2>Manage Parking Slots</h2>
+      <SlotForm refreshSlots={fetchSlots} />
+      <SlotList slots={slots} refreshSlots={fetchSlots} />
     </div>
-    </div>
-  )
-}
+  );
+};
 
-export default ParkingSpace
+export default ManageSlots;

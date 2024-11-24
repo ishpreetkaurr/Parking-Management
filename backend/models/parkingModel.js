@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
-const parkingSpaceSchema = new mongoose.Schema({
-  type: { type: String, required: true }, // '2Wheeler', '3Wheeler', or '4Wheeler'
-  status: { type: [String], required: true }, // Array of 'Available' or 'Occupied'
-});
+const parkingSlotSchema = new mongoose.Schema({
+  slotNumber: { type: Number, required: true, unique: true },
+  status: { type: String, enum: ['available', 'occupied'], default: 'available' },
+  size: { type: String, enum: ['small', 'medium', 'large'], default: 'medium' },
+  reservedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+}, { timestamps: true });
 
-const ParkingSpace = mongoose.model('ParkingSpace', parkingSpaceSchema);
-
-module.exports = ParkingSpace;
+module.exports = mongoose.model('ParkingSlot', parkingSlotSchema);

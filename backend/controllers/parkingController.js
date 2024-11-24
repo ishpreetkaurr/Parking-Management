@@ -1,50 +1,61 @@
-const ParkingSpace = require('../models/parkingModel');
+const ParkingSlot = require('../models/parkingModel');
 
-// Get all parking spaces
-const getParkingSpaces = async (req, res) => {
+// Create a parking slot
+const createSlot = async (req, res) => {
   try {
-    const spaces = await ParkingSpace.find();
-    res.status(200).json(spaces);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch parking spaces' });
+    const { slotNumber, size } = req.body;
+    const slotExists = await ParkingSlot.findOne({ slotNumber });
+    if (slotExists) return res.status(400).json({ message: 'Slot already exists' });
+
+    const slot = await ParkingSlot.create({ slotNumber, size });
+    res.status(201).json({ message: 'Parking slot created successfully', slot });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Update parking space status
-const updateParkingSpace = async (req, res) => {
+// Get all parking slots
+const getAllSlots = async (req, res) => {
   try {
-    const { type, index, status } = req.body;
-
-    const space = await ParkingSpace.findOne({ type });
-    if (space) {
-      space.status[index] = status; // Update the status
-      await space.save();
-      res.status(200).json({ message: 'Status updated successfully' });
-    } else {
-      res.status(404).json({ error: 'Parking type not found' });
-    }
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to update parking space' });
+    const slots = await ParkingSlot.find();
+    res.status(200).json(slots);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Seed initial parking data
-const seedParkingSpaces = async (req, res) => {
+// Update a parking slot
+const updateSlot = async (req, res) => {
   try {
-    await ParkingSpace.deleteMany(); // Clear existing data
-    await ParkingSpace.insertMany([
-      { type: '2Wheeler', status: Array(7).fill('Available') },
-      { type: '3Wheeler', status: Array(7).fill('Available') },
-      { type: '4Wheeler', status: Array(7).fill('Available') },
-    ]);
-    res.status(201).json({ message: 'Parking spaces seeded successfully' });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to seed parking spaces' });
+    const { id } = req.params;
+    const { status, reservedBy } = req.body;
+
+    const slot = await ParkingSlot.findByIdAndUpdate(
+      id,
+      { status, reservedBy },
+      { new: true }
+    );
+
+    if (!slot) return res.status(404).json({ message: 'Slot not found' });
+
+    res.status(200).json({ message: 'Slot updated successfully', slot });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = {
-  getParkingSpaces,
-  updateParkingSpace,
-  seedParkingSpaces,
+// Delete a parking slot
+const deleteSlot = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const slot = await ParkingSlot.findByIdAndDelete(id);
+    if (!slot) return res.status(404).json({ message: 'Slot not found' });
+
+    res.status(200).json({ message: 'Slot deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
+
+module.exports = { createSlot, getAllSlots, updateSlot, deleteSlot };

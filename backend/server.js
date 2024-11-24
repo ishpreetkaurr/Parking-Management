@@ -12,7 +12,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use('/api/user', userRoutes);
-app.use('/api/parking', parkingRoutes);
+app.use('/api', parkingRoutes);
 
 const PORT = process.env.PORT || 5000;
 
