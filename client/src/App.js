@@ -4,6 +4,7 @@ import Login from'./Components/Login';
 import Signup from './Components/SignUp';
 import Footer from './Components/Footer';
 import ParkingSpace from './Components/ParkingSpace';
+import Reservation from"./Components/Reservation";
 //import './App.css';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <Login />
       <Signup />  
       <ParkingSpace /> 
+      <Reservation />
       <Footer />
     </div>
   );
