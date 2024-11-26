@@ -1,8 +1,10 @@
 const express = require('express');
-const { createReservation, getReservations } = require('../controllers/reservationController');
+const { createReservation } = require('../controllers/reservationController');
+const { validateToken } = require('../middlewares/jwtMiddleware');
+
 const router = express.Router();
 
-router.post('/create', createReservation);
-// router.get('/get', getReservations);
+// POST /api/create - Create a reservation
+router.post('/create', validateToken, createReservation);
 
 module.exports = router;

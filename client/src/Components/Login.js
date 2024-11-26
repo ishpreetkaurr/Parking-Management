@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import "../Styles/Login.css";
+import { Link } from "react-router";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -54,9 +55,9 @@ const Login = () => {
         <p>Please log in</p>
         <input
           type="text"
-          placeholder="User Name"
-          name="username"
-          value={formData.username}
+          placeholder="Email"
+          name="email"
+          value={formData.email}
           onChange={handleChange}
           required
         />
@@ -72,7 +73,7 @@ const Login = () => {
         {message && <div className="message">{message}</div>}
         <div className="links">
           <a href="#">Forgot password</a>
-          <a href="#">Register</a>
+          <Link to = "/">Register</Link>
         </div>
       </form>
     </div>

@@ -38,9 +38,9 @@ const SlotForm = ({ refreshSlots }) => {
         required
       />
       <select value={size} onChange={(e) => setSize(e.target.value)}>
-        <option value="small">Small</option>
-        <option value="medium">Medium</option>
-        <option value="large">Large</option>
+        <option value="2wheeler">Small</option>
+        <option value="3wheeler">Medium</option>
+        <option value="4wheeler">Large</option>
       </select>
       <button type="submit">Add Slot</button>
     </form>

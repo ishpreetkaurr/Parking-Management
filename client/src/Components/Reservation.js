@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import "../Styles/Reserve.css"
 
 function Reserve() {
   const [slotId, setSlotId] = useState('');
@@ -7,7 +8,7 @@ function Reserve() {
 
   const handleReserve = async () => {
     try {
-      const response = await fetch('/api/reservation', {
+      const response = await fetch('http://localhost:5000/api/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

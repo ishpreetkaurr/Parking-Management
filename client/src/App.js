@@ -1,22 +1,25 @@
-import logo from './logo.svg';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar';
-import Login from'./Components/Login';
+import Login from './Components/Login';
 import Signup from './Components/SignUp';
 import Footer from './Components/Footer';
 import ParkingSpace from './Components/ParkingSpace';
-import Reservation from"./Components/Reservation";
-//import './App.css';
+import Reservation from './Components/Reservation';
 
 function App() {
   return (
-    <div className='App'>
-      <Navbar />
-      <Login />
-      <Signup />  
-      <ParkingSpace /> 
-      <Reservation />
-      <Footer />
-    </div>
+    <Router>
+      <div className='App'>
+        <Navbar />
+        <Routes>
+          <Route path="/parking" element={<ParkingSpace />} /> 
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Signup />} />{/* Default Route */}
+          <Route path="/reservation" element={<Reservation />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
